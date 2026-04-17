@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product — AudiLens</title>
+  <meta name="description" content="How AudiLens uses XGBoost machine learning and NHANES audiometric data to predict hearing loss progression in audiology patients." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-hero {
+      padding: 10rem 4rem 5rem;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--dark-mid) 100%);
+      text-align: center;
+    }
+    .page-hero h1 { color: var(--white); margin-bottom: 1rem; }
+    .page-hero p { color: rgba(255,255,255,0.6); max-width: 560px; margin: 0 auto; font-size: 1.1rem; }
+
+    /* model section */
+    .model-section { background: var(--white); }
+    .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .feature-list { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+    .feature-item {
+      display: flex; gap: 1rem;
+      padding: 1.25rem; background: var(--light);
+      border-radius: var(--radius); border-left: 3px solid var(--accent);
+    }
+    .feature-badge {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem; color: var(--teal); flex-shrink: 0; line-height: 1.2;
+    }
+    .feature-item h4 { font-family: var(--sans); font-size: 0.95rem; font-weight: 600; color: var(--dark); margin-bottom: 0.25rem; }
+    .feature-item p { font-size: 0.875rem; margin: 0; }
+
+    /* metrics grid */
+    .metrics-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 1rem; margin-top: 2.5rem; }
+    .metric-box {
+      background: var(--light); border-radius: var(--radius);
+      padding: 1.25rem 1rem; text-align: center;
+      border: 1px solid rgba(2,128,144,0.12);
+    }
+    .metric-box .num { font-family: var(--serif); font-size: 2rem; color: var(--teal); line-height: 1; }
+    .metric-box .lbl { font-size: 0.75rem; color: var(--mid); margin-top: 0.3rem; }
+
+    /* data section */
+    .data-section { background: var(--light); }
+    .data-table {
+      background: var(--white); border-radius: var(--radius-lg);
+      overflow: hidden; border: 1px solid rgba(2,128,144,0.12);
+      margin-top: 2rem;
+    }
+    .data-row {
+      display: grid; grid-template-columns: 1.5fr 1fr 2fr;
+      padding: 0.9rem 1.5rem;
+      border-bottom: 1px solid rgba(2,128,144,0.08);
+      align-items: center;
+    }
+    .data-row:last-child { border-bottom: none; }
+    .data-row.hdr {
+      background: var(--teal); font-size: 0.75rem;
+      font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--white);
+    }
+    .data-row:not(.hdr):hover { background: var(--light); }
+    .data-row span { font-size: 0.875rem; color: var(--mid); }
+    .data-row span.name { font-weight: 600; color: var(--dark); }
+    .data-row span.total { font-weight: 700; color: var(--teal); }
+
+    /* evolution */
+    .evolution-section { background: var(--white); }
+    .timeline { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; margin-top: 3rem; position: relative; }
+    .timeline::before {
+      content: ''; position: absolute;
+      top: 32px; left: 32px; right: 32px; height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--accent));
+    }
+    .timeline-item { position: relative; }
+    .timeline-dot {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--teal); color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-family: var(--sans); font-size: 0.75rem; font-weight: 600;
+      text-align: center; line-height: 1.2; z-index: 1; position: relative;
+    }
+    .timeline-dot.accent { background: var(--accent); color: var(--dark); }
+    .timeline-item h4 { font-family: var(--sans); font-size: 0.95rem; font-weight: 600; color: var(--dark); text-align: center; margin-bottom: 0.5rem; }
+    .timeline-item p { font-size: 0.825rem; text-align: center; }
+    .auc-pill {
+      display: inline-block; background: var(--teal-light); color: var(--teal);
+      font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.6rem;
+      border-radius: 99px; margin-top: 0.5rem;
+    }
+
+    /* shap */
+    .shap-section { background: var(--teal-deep); color: var(--white); }
+    .shap-section h2, .shap-section h3 { color: var(--white); }
+    .shap-section .section-label { color: var(--accent); }
+    .shap-section p { color: rgba(255,255,255,0.65); }
+    .shap-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 2.5rem; }
+    .shap-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(2,195,154,0.2);
+      border-radius: var(--radius-lg); padding: 1.5rem;
+    }
+    .shap-card .reason {
+      font-family: var(--sans); font-size: 0.95rem; font-weight: 500;
+      color: var(--accent); margin-bottom: 0.5rem;
+      padding: 0.5rem 0.75rem; background: rgba(2,195,154,0.1);
+      border-radius: var(--radius); display: inline-block;
+    }
+    .shap-card p { font-size: 0.85rem; color: rgba(255,255,255,0.55); margin-top: 0.75rem; }
+
+    /* hipaa */
+    .hipaa-section { background: var(--light); }
+    .hipaa-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 2.5rem; }
+
+    @media(max-width:900px){
+      .page-hero { padding: 8rem 1.5rem 3rem; }
+      .model-grid { grid-template-columns: 1fr; }
+      .metrics-row { grid-template-columns: repeat(3,1fr); }
+      .data-row { grid-template-columns: 1fr 1fr; }
+      .data-row span:nth-child(3) { display: none; }
+      .timeline { grid-template-columns: 1fr 1fr; }
+      .timeline::before { display: none; }
+      .shap-cards, .hipaa-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="product.html">
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <span class="section-label">Product</span>
+  <h1>How AudiLens works</h1>
+  <p>From audiogram export to ranked outreach list — powered by a longitudinal progression model trained on 14,553 NHANES audiograms and improving monthly on your own data.</p>
+</div>
+
+<!-- MODEL SECTION -->
+<section class="model-section" id="model">
+  <div class="container">
+    <div class="model-grid">
+      <div class="fade-up">
+        <span class="section-label">The model</span>
+        <h2>XGBoost with SHAP explainability</h2>
+        <p class="mt-2">We chose XGBoost deliberately over neural networks for three reasons that matter for clinical deployment: it trains effectively on datasets under 15,000 patients without overfitting; it produces per-patient SHAP explanations that translate directly into plain-language reasons your staff can read; and it runs inference on a 1,000-patient panel in under 100ms on commodity hardware with no GPU required.</p>
+        <p class="mt-2">The model scores every patient aged 45+ who is not currently using hearing aids. Each patient gets a 0–1 risk score and a priority tier — High (top 20%), Medium (20–50%), or Routine.</p>
+        <div class="metrics-row">
+          <div class="metric-box"><div class="num">0.948</div><div class="lbl">AUC (test set)</div></div>
+          <div class="metric-box"><div class="num">91%</div><div class="lbl">Accuracy</div></div>
+          <div class="metric-box"><div class="num">77%</div><div class="lbl">Recall</div></div>
+          <div class="metric-box"><div class="num">91%</div><div class="lbl">Precision</div></div>
+          <div class="metric-box"><div class="num">0.84</div><div class="lbl">F1 score</div></div>
+        </div>
+        <p class="mt-3" style="font-size:0.8rem;color:var(--muted);">Results on held-out test set of 2,911 patients. AUC reflects cross-sectional risk ranking on proxy label — see model evolution below for expected performance trajectory with longitudinal data.</p>
+      </div>
+      <div class="fade-up">
+        <h3 style="font-family:var(--sans);font-weight:600;font-size:1.1rem;color:var(--dark);margin-bottom:1.25rem;">Four features. Clinically grounded.</h3>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-badge">age</div>
+            <div>
+              <h4>Age in years</h4>
+              <p>Strongest population-level predictor of PTA elevation. Each additional decade above 55 is associated with substantially higher mean PTA in NHANES data.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-badge">PTA</div>
+            <div>
+              <h4>PTA — better ear</h4>
+              <p>4-frequency pure tone average (500Hz, 1kHz, 2kHz, 4kHz) of the better ear. The clinical standard for hearing ability measurement and hearing aid candidacy determination.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-badge">HF</div>
+            <div>
+              <h4>High-frequency slope</h4>
+              <p>Mean 4kHz threshold minus mean 500Hz threshold across both ears. The characteristic sloping pattern of age-related sensorineural loss — the earliest audiometric indicator of progressive cochlear damage.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-badge">♂♀</div>
+            <div>
+              <h4>Sex</h4>
+              <p>Men have approximately twice the hearing loss prevalence of women in the 20–69 age group per NIDCD data. A consistent predictor in published presbycusis progression models.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA SECTION -->
+<section class="data-section" id="data">
+  <div class="container">
+    <span class="section-label fade-up">Training data</span>
+    <h2 class="fade-up">14,553 audiograms. 7 cycles. One nationally representative foundation.</h2>
+    <p class="fade-up mt-2" style="max-width:620px;">The initial model is trained on publicly available data from the CDC's National Health and Nutrition Examination Survey (NHANES) — the gold standard for US population health surveillance. Seven cycles spanning 2001–2016, pure-tone air conduction thresholds at 500Hz through 8kHz for both ears, merged with demographic data.</p>
+    <div class="data-table fade-up">
+      <div class="data-row hdr"><span>Survey cycle</span><span>Records</span><span>Notes</span></div>
+      <div class="data-row"><span class="name">2001–2002 (AUX_B)</span><span>2,046</span><span>First cycle with standardized protocol</span></div>
+      <div class="data-row"><span class="name">2003–2004 (AUX_C)</span><span>1,889</span><span></span></div>
+      <div class="data-row"><span class="name">2005–2006 (AUX_D)</span><span>3,034</span><span>Largest single cycle in training set</span></div>
+      <div class="data-row"><span class="name">2007–2008 (AUX_E)</span><span>1,210</span><span></span></div>
+      <div class="data-row"><span class="name">2009–2010 (AUX_F)</span><span>2,368</span><span>Diabetes and hypertension flags merged</span></div>
+      <div class="data-row"><span class="name">2011–2012 (AUX_G)</span><span>4,500</span><span></span></div>
+      <div class="data-row"><span class="name">2015–2016 (AUX_I)</span><span>4,582</span><span>Most recent available cycle</span></div>
+      <div class="data-row"><span class="name total">Total (clean)</span><span class="total">14,553</span><span>Adults 18+, valid PTA both ears</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVOLUTION -->
+<section class="evolution-section">
+  <div class="container text-center">
+    <span class="section-label fade-up">Model evolution</span>
+    <h2 class="fade-up">The model improves every month you use it.</h2>
+    <p class="fade-up mt-2" style="max-width:580px;margin:0 auto;">Each PoC deployment accumulates longitudinal outcome data that NHANES cannot provide. The model retrains monthly on your patients — and each new data source unlocks a materially better prediction.</p>
+    <div class="timeline">
+      <div class="timeline-item fade-up">
+        <div class="timeline-dot">Now</div>
+        <h4>NHANES baseline</h4>
+        <p>Cross-sectional risk ranking on 14,553 public audiograms. Already beats calendar recall from day one.</p>
+        <div><span class="auc-pill">AUC 0.948</span></div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="timeline-dot">Month 6–8</div>
+        <h4>PoC longitudinal data</h4>
+        <p>Serial audiograms from your patients. Delta-PTA per year feature active. True progression label unlocked.</p>
+        <div><span class="auc-pill">AUC 0.75–0.82</span></div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="timeline-dot accent">Month 12+</div>
+        <h4>Intake form features</h4>
+        <p>Diabetes, hypertension, NSAID use, noise history. Comorbidity risk multipliers active (HR 1.33–1.45).</p>
+        <div><span class="auc-pill">AUC 0.78–0.85</span></div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="timeline-dot accent">Month 18+</div>
+        <h4>Pharmacy data</h4>
+        <p>Surescripts medication fills. Ototoxic drug exposure — far more accurate than self-report.</p>
+        <div><span class="auc-pill">AUC 0.82–0.88</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHAP -->
+<section class="shap-section">
+  <div class="container">
+    <span class="section-label">Explainability</span>
+    <h2>Your staff sees reasons. Not scores.</h2>
+    <p class="mt-2" style="max-width:560px;">SHAP (SHapley Additive exPlanations) decomposes every patient's score into per-feature contributions. The top three drivers are translated into plain language your front desk can read and act on immediately — no clinical training required.</p>
+    <div class="shap-cards">
+      <div class="shap-card fade-up">
+        <div class="reason">"High-frequency loss accelerating"</div>
+        <p>hf_slope feature elevated — 4kHz thresholds significantly worse than 500Hz thresholds. Classic early presbycusis pattern.</p>
+      </div>
+      <div class="shap-card fade-up">
+        <div class="reason">"Last visit 22 months ago"</div>
+        <p>Time since last audiometric evaluation exceeds the 18-month threshold combined with elevated risk score.</p>
+      </div>
+      <div class="shap-card fade-up">
+        <div class="reason">"Age-adjusted loss above peer baseline"</div>
+        <p>PTA tracking materially ahead of age-matched population norm — progressing faster than expected for this patient's age.</p>
+      </div>
+    </div>
+    <p class="mt-3" style="font-size:0.8rem;color:rgba(255,255,255,0.35);">All outreach language is administrative — never clinical. AudiLens does not diagnose hearing loss or recommend treatment. All clinical decisions are made by the treating audiologist.</p>
+  </div>
+</section>
+
+<!-- HIPAA -->
+<section class="hipaa-section">
+  <div class="container">
+    <span class="section-label fade-up">HIPAA &amp; Security</span>
+    <h2 class="fade-up">All patient data stays inside your building.</h2>
+    <p class="fade-up mt-2" style="max-width:560px;">AudiLens is packaged as a Docker Compose deployment that runs on your server or within your own cloud tenant. No PHI ever leaves the practice environment. A Business Associate Agreement (BAA) is executed before any data access.</p>
+    <div class="hipaa-grid">
+      <div class="card fade-up">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3 style="font-family:var(--sans);font-size:1rem;font-weight:600;">On-premise deployment</h3>
+        <p class="mt-1" style="font-size:0.875rem;">Entire stack runs within your environment. AudiLens never operates or controls the environment in which PHI is processed.</p>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 style="font-family:var(--sans);font-size:1rem;font-weight:600;">Encryption &amp; audit logging</h3>
+        <p class="mt-1" style="font-size:0.875rem;">AES-256 at rest, TLS 1.3 in transit, append-only audit log retained 6 years per HIPAA requirements.</p>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3 style="font-family:var(--sans);font-size:1rem;font-weight:600;">Aggregate metrics only</h3>
+        <p class="mt-1" style="font-size:0.875rem;">De-identified practice-level performance metrics (queue utilization, conversion rate) transmit to AudiLens nightly over encrypted HTTPS. No patient-level data ever transmitted.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+</body>
+</html>
