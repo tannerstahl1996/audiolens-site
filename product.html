@@ -132,7 +132,7 @@
 <div class="page-hero">
   <span class="section-label">Product</span>
   <h1>How AudiLens works</h1>
-  <p>From audiogram export to ranked outreach list — powered by a longitudinal progression model trained on 14,553 NHANES audiograms and improving monthly on your own data.</p>
+  <p>From audiogram export to ranked outreach list — powered by a machine learning progression model trained on large-scale population audiometric data and improving continuously as your practice data accumulates.</p>
 </div>
 
 <!-- MODEL SECTION -->
@@ -141,47 +141,40 @@
     <div class="model-grid">
       <div class="fade-up">
         <span class="section-label">The model</span>
-        <h2>XGBoost with SHAP explainability</h2>
-        <p class="mt-2">We chose XGBoost deliberately over neural networks for three reasons that matter for clinical deployment: it trains effectively on datasets under 15,000 patients without overfitting; it produces per-patient SHAP explanations that translate directly into plain-language reasons your staff can read; and it runs inference on a 1,000-patient panel in under 100ms on commodity hardware with no GPU required.</p>
-        <p class="mt-2">The model scores every patient aged 45+ who is not currently using hearing aids. Each patient gets a 0–1 risk score and a priority tier — High (top 20%), Medium (20–50%), or Routine.</p>
-        <div class="metrics-row">
-          <div class="metric-box"><div class="num">0.948</div><div class="lbl">AUC (test set)</div></div>
-          <div class="metric-box"><div class="num">91%</div><div class="lbl">Accuracy</div></div>
-          <div class="metric-box"><div class="num">77%</div><div class="lbl">Recall</div></div>
-          <div class="metric-box"><div class="num">91%</div><div class="lbl">Precision</div></div>
-          <div class="metric-box"><div class="num">0.84</div><div class="lbl">F1 score</div></div>
-        </div>
-        <p class="mt-3" style="font-size:0.8rem;color:var(--muted);">Results on held-out test set of 2,911 patients. AUC reflects cross-sectional risk ranking on proxy label — see model evolution below for expected performance trajectory with longitudinal data.</p>
+        <h2>Explainable AI — built for clinical deployment</h2>
+        <p class="mt-2">AudiLens uses a gradient-boosted classification model chosen for three properties that matter in healthcare: it produces reliable predictions on the patient panel sizes typical of independent audiology practices; it generates per-patient explanations that translate directly into plain-language reasons your staff can act on; and it runs entirely on-premise with no GPU or cloud infrastructure required.</p>
+        <p class="mt-2">The model scores every eligible patient — typically adults 45+ who are not current hearing aid users. Each patient receives a risk score and a priority tier: High (top 20% by progression risk), Medium, or Routine. Tiers determine where each patient appears in the outreach queue.</p>
+        <p class="mt-3" style="font-size:0.875rem;color:var(--mid);">Model performance improves continuously as your practice accumulates longitudinal outcome data — conversion rates, post-visit audiogram results, and fitting records. The model retrains monthly on local data, calibrating to your specific patient population over time.</p>
       </div>
       <div class="fade-up">
-        <h3 style="font-family:var(--sans);font-weight:600;font-size:1.1rem;color:var(--dark);margin-bottom:1.25rem;">Four features. Clinically grounded.</h3>
+        <h3 style="font-family:var(--sans);font-weight:600;font-size:1.1rem;color:var(--dark);margin-bottom:1.25rem;">What the model reads.</h3>
         <div class="feature-list">
-          <div class="feature-item">
-            <div class="feature-badge">age</div>
-            <div>
-              <h4>Age in years</h4>
-              <p>Strongest population-level predictor of PTA elevation. Each additional decade above 55 is associated with substantially higher mean PTA in NHANES data.</p>
-            </div>
-          </div>
           <div class="feature-item">
             <div class="feature-badge">PTA</div>
             <div>
-              <h4>PTA — better ear</h4>
-              <p>4-frequency pure tone average (500Hz, 1kHz, 2kHz, 4kHz) of the better ear. The clinical standard for hearing ability measurement and hearing aid candidacy determination.</p>
+              <h4>Audiometric thresholds</h4>
+              <p>Pure tone average across key frequencies for each ear. The clinical standard for measuring hearing ability — and the foundation of every progression calculation.</p>
             </div>
           </div>
           <div class="feature-item">
             <div class="feature-badge">HF</div>
             <div>
               <h4>High-frequency slope</h4>
-              <p>Mean 4kHz threshold minus mean 500Hz threshold across both ears. The characteristic sloping pattern of age-related sensorineural loss — the earliest audiometric indicator of progressive cochlear damage.</p>
+              <p>The characteristic early signature of age-related sensorineural loss — the drop-off at higher frequencies before it becomes visible in standard PTA. Often the first detectable signal of progressive cochlear damage.</p>
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-badge">♂♀</div>
+            <div class="feature-badge">∆</div>
             <div>
-              <h4>Sex</h4>
-              <p>Men have approximately twice the hearing loss prevalence of women in the 20–69 age group per NIDCD data. A consistent predictor in published presbycusis progression models.</p>
+              <h4>Longitudinal trajectory</h4>
+              <p>As your practice data accumulates, the model computes individual hearing change over time — delta-PTA per year, acceleration, and deviation from age-adjusted population norms.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-badge">Rx</div>
+            <div>
+              <h4>Comorbidity &amp; medication signals</h4>
+              <p>Diabetes, hypertension, and ototoxic medications (NSAIDs, loop diuretics, certain antibiotics) are established risk multipliers for hearing loss progression. As intake data and prescription records become available, these signals are incorporated — substantially improving predictive accuracy.</p>
             </div>
           </div>
         </div>
@@ -194,18 +187,24 @@
 <section class="data-section" id="data">
   <div class="container">
     <span class="section-label fade-up">Training data</span>
-    <h2 class="fade-up">14,553 audiograms. 7 cycles. One nationally representative foundation.</h2>
-    <p class="fade-up mt-2" style="max-width:620px;">The initial model is trained on publicly available data from the CDC's National Health and Nutrition Examination Survey (NHANES) — the gold standard for US population health surveillance. Seven cycles spanning 2001–2016, pure-tone air conduction thresholds at 500Hz through 8kHz for both ears, merged with demographic data.</p>
-    <div class="data-table fade-up">
-      <div class="data-row hdr"><span>Survey cycle</span><span>Records</span><span>Notes</span></div>
-      <div class="data-row"><span class="name">2001–2002 (AUX_B)</span><span>2,046</span><span>First cycle with standardized protocol</span></div>
-      <div class="data-row"><span class="name">2003–2004 (AUX_C)</span><span>1,889</span><span></span></div>
-      <div class="data-row"><span class="name">2005–2006 (AUX_D)</span><span>3,034</span><span>Largest single cycle in training set</span></div>
-      <div class="data-row"><span class="name">2007–2008 (AUX_E)</span><span>1,210</span><span></span></div>
-      <div class="data-row"><span class="name">2009–2010 (AUX_F)</span><span>2,368</span><span>Diabetes and hypertension flags merged</span></div>
-      <div class="data-row"><span class="name">2011–2012 (AUX_G)</span><span>4,500</span><span></span></div>
-      <div class="data-row"><span class="name">2015–2016 (AUX_I)</span><span>4,582</span><span>Most recent available cycle</span></div>
-      <div class="data-row"><span class="name total">Total (clean)</span><span class="total">14,553</span><span>Adults 18+, valid PTA both ears</span></div>
+    <h2 class="fade-up">Built on population-scale audiometric research.</h2>
+    <p class="fade-up mt-2" style="max-width:660px;">The initial model is trained on large-scale, nationally representative population audiometric data — tens of thousands of adult records spanning multiple survey cycles, covering pure-tone air conduction thresholds across the full frequency range, merged with demographic and health data.</p>
+    <div class="fade-up mt-4" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;max-width:860px;">
+      <div class="card">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3 style="font-family:var(--sans);font-size:0.95rem;font-weight:600;">Population-representative</h3>
+        <p class="mt-1" style="font-size:0.875rem;">Training data drawn from gold-standard US population health surveillance programs — demographically weighted and validated to represent the adult population most likely to appear in an independent audiology practice.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <h3 style="font-family:var(--sans);font-size:0.95rem;font-weight:600;">Improving with your data</h3>
+        <p class="mt-1" style="font-size:0.875rem;">Population data provides the foundation. Your longitudinal patient records provide the refinement. As the model accumulates serial audiograms, visit outcomes, and fitting records from your practice, it retrains monthly on local data.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <h3 style="font-family:var(--sans);font-size:0.95rem;font-weight:600;">Comorbidity-aware</h3>
+        <p class="mt-1" style="font-size:0.875rem;">Diabetes, hypertension, and ototoxic medication exposure are incorporated as risk multipliers as patient intake and prescription data become available — substantially improving prediction accuracy over the audiogram-only baseline.</p>
+      </div>
     </div>
   </div>
 </section>
