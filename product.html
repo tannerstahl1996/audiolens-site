@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Product — AudiLens</title>
+  <title>AudiLens Product</title>
   <meta name="description" content="How AudiLens uses XGBoost machine learning and NHANES audiometric data to predict hearing loss progression in audiology patients." />
   <link rel="stylesheet" href="style.css" />
   <style>
@@ -132,7 +132,7 @@
 <div class="page-hero">
   <span class="section-label">Product</span>
   <h1>How AudiLens works</h1>
-  <p>From audiogram export to ranked outreach list — powered by a machine learning progression model trained on large-scale population audiometric data and improving continuously as your practice data accumulates.</p>
+  <p>From audiogram export to ranked outreach list, powered by a machine learning progression model trained on large-scale population audiometric data and improving continuously as your practice data accumulates.</p>
 </div>
 
 <!-- MODEL SECTION -->
@@ -141,10 +141,10 @@
     <div class="model-grid">
       <div class="fade-up">
         <span class="section-label">The model</span>
-        <h2>Explainable AI — built for clinical deployment</h2>
+        <h2>Explainable AI Built for Clinical Deployment</h2>
         <p class="mt-2">AudiLens uses a gradient-boosted classification model chosen for three properties that matter in healthcare: it produces reliable predictions on the patient panel sizes typical of independent audiology practices; it generates per-patient explanations that translate directly into plain-language reasons your staff can act on; and it runs entirely on-premise with no GPU or cloud infrastructure required.</p>
-        <p class="mt-2">The model scores every eligible patient — typically adults 45+ who are not current hearing aid users. Each patient receives a risk score and a priority tier: High (top 20% by progression risk), Medium, or Routine. Tiers determine where each patient appears in the outreach queue.</p>
-        <p class="mt-3" style="font-size:0.875rem;color:var(--mid);">Model performance improves continuously as your practice accumulates longitudinal outcome data — conversion rates, post-visit audiogram results, and fitting records. The model retrains monthly on local data, calibrating to your specific patient population over time.</p>
+        <p class="mt-2">The model scores every eligible patient, typically adults 45+ who are not current hearing aid users. Each patient receives a risk score and a priority tier: High (top 20% by progression risk), Medium, or Routine. Tiers determine where each patient appears in the outreach queue.</p>
+        <p class="mt-3" style="font-size:0.875rem;color:var(--mid);">Model performance improves continuously as your practice accumulates longitudinal outcome data including conversion rates, post-visit audiogram results, and fitting records. The model retrains monthly on local data and calibrates to your specific patient population over time.</p>
       </div>
       <div class="fade-up">
         <h3 style="font-family:var(--sans);font-weight:600;font-size:1.1rem;color:var(--dark);margin-bottom:1.25rem;">What the model reads.</h3>
@@ -153,28 +153,28 @@
             <div class="feature-badge">PTA</div>
             <div>
               <h4>Audiometric thresholds</h4>
-              <p>Pure tone average across key frequencies for each ear. The clinical standard for measuring hearing ability — and the foundation of every progression calculation.</p>
+              <p>Pure tone average across key frequencies for each ear. The clinical standard for measuring hearing ability and the foundation of every progression calculation.</p>
             </div>
           </div>
           <div class="feature-item">
             <div class="feature-badge">HF</div>
             <div>
               <h4>High-frequency slope</h4>
-              <p>The characteristic early signature of age-related sensorineural loss — the drop-off at higher frequencies before it becomes visible in standard PTA. Often the first detectable signal of progressive cochlear damage.</p>
+              <p>The early signature of age-related sensorineural loss is a characteristic drop-off at higher frequencies that often precedes visible changes in standard PTA. This is frequently the first detectable signal of progressive cochlear damage.</p>
             </div>
           </div>
           <div class="feature-item">
             <div class="feature-badge">∆</div>
             <div>
               <h4>Longitudinal trajectory</h4>
-              <p>As your practice data accumulates, the model computes individual hearing change over time — delta-PTA per year, acceleration, and deviation from age-adjusted population norms.</p>
+              <p>As your practice data accumulates, the model computes individual hearing change over time: delta-PTA per year, acceleration, and deviation from age-adjusted population norms.</p>
             </div>
           </div>
           <div class="feature-item">
             <div class="feature-badge">Rx</div>
             <div>
               <h4>Comorbidity &amp; medication signals</h4>
-              <p>Diabetes, hypertension, and ototoxic medications (NSAIDs, loop diuretics, certain antibiotics) are established risk multipliers for hearing loss progression. As intake data and prescription records become available, these signals are incorporated — substantially improving predictive accuracy.</p>
+              <p>Diabetes, hypertension, and ototoxic medications (NSAIDs, loop diuretics, certain antibiotics) are established risk multipliers for hearing loss progression. As intake data and prescription records become available, these signals are incorporated, substantially improving predictive accuracy.</p>
             </div>
           </div>
         </div>
@@ -188,12 +188,12 @@
   <div class="container">
     <span class="section-label fade-up">Training data</span>
     <h2 class="fade-up">Built on population-scale audiometric research.</h2>
-    <p class="fade-up mt-2" style="max-width:660px;">The initial model is trained on large-scale, nationally representative population audiometric data — tens of thousands of adult records spanning multiple survey cycles, covering pure-tone air conduction thresholds across the full frequency range, merged with demographic and health data.</p>
+    <p class="fade-up mt-2" style="max-width:660px;">The initial model is trained on large-scale, nationally representative population audiometric data covering tens of thousands of adult records spanning multiple survey cycles, covering pure-tone air conduction thresholds across the full frequency range, merged with demographic and health data.</p>
     <div class="fade-up mt-4" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;max-width:860px;">
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <h3 style="font-family:var(--sans);font-size:0.95rem;font-weight:600;">Population-representative</h3>
-        <p class="mt-1" style="font-size:0.875rem;">Training data drawn from gold-standard US population health surveillance programs — demographically weighted and validated to represent the adult population most likely to appear in an independent audiology practice.</p>
+        <p class="mt-1" style="font-size:0.875rem;">Training data drawn from gold-standard US population health surveillance programs, demographically weighted and validated to represent the adult population most likely to appear in an independent audiology practice.</p>
       </div>
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
@@ -203,7 +203,7 @@
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
         <h3 style="font-family:var(--sans);font-size:0.95rem;font-weight:600;">Comorbidity-aware</h3>
-        <p class="mt-1" style="font-size:0.875rem;">Diabetes, hypertension, and ototoxic medication exposure are incorporated as risk multipliers as patient intake and prescription data become available — substantially improving prediction accuracy over the audiogram-only baseline.</p>
+        <p class="mt-1" style="font-size:0.875rem;">Diabetes, hypertension, and ototoxic medication exposure are incorporated as risk multipliers as patient intake and prescription data become available, substantially improving prediction accuracy over the audiogram-only baseline.</p>
       </div>
     </div>
   </div>
@@ -214,7 +214,7 @@
   <div class="container text-center">
     <span class="section-label fade-up">Model evolution</span>
     <h2 class="fade-up">The model improves every month you use it.</h2>
-    <p class="fade-up mt-2" style="max-width:580px;margin:0 auto;">Each trial deployment accumulates longitudinal outcome data that population datasets cannot provide. The model retrains monthly on your patients — and each new data source unlocks a materially better prediction.</p>
+    <p class="fade-up mt-2" style="max-width:580px;margin:0 auto;">Each trial deployment accumulates longitudinal outcome data that population datasets cannot provide. The model retrains monthly on your patients, and each new data source unlocks a materially better prediction.</p>
     <div class="timeline">
       <div class="timeline-item fade-up">
         <div class="timeline-dot">Now</div>
@@ -234,7 +234,7 @@
       <div class="timeline-item fade-up">
         <div class="timeline-dot accent">Month 18+</div>
         <h4>Prescription data</h4>
-        <p>Ototoxic medication fills sourced from prescription data aggregators — far more accurate than self-report for identifying high-risk patients.</p>
+        <p>Ototoxic medication fills sourced from prescription data aggregators, which is far more accurate than self-report for identifying high-risk patients.</p>
       </div>
     </div>
   </div>
@@ -245,11 +245,11 @@
   <div class="container">
     <span class="section-label">Explainability</span>
     <h2>Your staff sees reasons. Not scores.</h2>
-    <p class="mt-2" style="max-width:560px;">SHAP (SHapley Additive exPlanations) decomposes every patient's score into per-feature contributions. The top three drivers are translated into plain language your front desk can read and act on immediately — no clinical training required.</p>
+    <p class="mt-2" style="max-width:560px;">SHAP (SHapley Additive exPlanations) decomposes every patient's score into per-feature contributions. The top three drivers are translated into plain language your front desk can read and act on immediately. No clinical training required.</p>
     <div class="shap-cards">
       <div class="shap-card fade-up">
         <div class="reason">"High-frequency loss accelerating"</div>
-        <p>hf_slope feature elevated — 4kHz thresholds significantly worse than 500Hz thresholds. Classic early presbycusis pattern.</p>
+        <p>hf_slope feature elevated. 4kHz thresholds significantly worse than 500Hz thresholds. Classic early presbycusis pattern.</p>
       </div>
       <div class="shap-card fade-up">
         <div class="reason">"Last visit 22 months ago"</div>
@@ -257,10 +257,10 @@
       </div>
       <div class="shap-card fade-up">
         <div class="reason">"Age-adjusted loss above peer baseline"</div>
-        <p>PTA tracking materially ahead of age-matched population norm — progressing faster than expected for this patient's age.</p>
+        <p>PTA tracking materially ahead of the age-matched population norm, progressing faster than expected for this patient's age.</p>
       </div>
     </div>
-    <p class="mt-3" style="font-size:0.8rem;color:rgba(255,255,255,0.35);">All outreach language is administrative — never clinical. AudiLens does not diagnose hearing loss or recommend treatment. All clinical decisions are made by the treating audiologist.</p>
+    <p class="mt-3" style="font-size:0.8rem;color:rgba(255,255,255,0.35);">All outreach language is administrative, never clinical. AudiLens does not diagnose hearing loss or recommend treatment. All clinical decisions are made by the treating audiologist.</p>
   </div>
 </section>
 
